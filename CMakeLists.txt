@@ -6,14 +6,14 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 project(RE2 CXX)
-include(CTest)
+# include(CTest)
 
-option(BUILD_SHARED_LIBS "build shared libraries" OFF)
+option(BUILD_SHARED_LIBS "build shared libraries" ON)
 option(USEPCRE "use PCRE in tests and benchmarks" OFF)
 
 # CMake seems to have no way to enable/disable testing per subproject,
 # so we provide an option similar to BUILD_TESTING, but just for RE2.
-option(RE2_BUILD_TESTING "enable testing for RE2" ON)
+option(RE2_BUILD_TESTING "enable testing for RE2" OFF)
 
 set(EXTRA_TARGET_LINK_LIBRARIES)
 
@@ -72,18 +72,18 @@ set(RE2_SOURCES
 
 add_library(re2 ${RE2_SOURCES})
 
-set(TESTING_SOURCES
-    re2/testing/backtrack.cc
-    re2/testing/dump.cc
-    re2/testing/exhaustive_tester.cc
-    re2/testing/null_walker.cc
-    re2/testing/regexp_generator.cc
-    re2/testing/string_generator.cc
-    re2/testing/tester.cc
-    util/pcre.cc
-    )
+# set(TESTING_SOURCES
+#     re2/testing/backtrack.cc
+#     re2/testing/dump.cc
+#     re2/testing/exhaustive_tester.cc
+#     re2/testing/null_walker.cc
+#     re2/testing/regexp_generator.cc
+#     re2/testing/string_generator.cc
+#     re2/testing/tester.cc
+#     util/pcre.cc
+#     )
 
-add_library(testing STATIC ${TESTING_SOURCES})
+# add_library(testing STATIC ${TESTING_SOURCES})
 
 set(TEST_TARGETS
     charclass_test
@@ -109,22 +109,22 @@ set(TEST_TARGETS
     random_test
     )
 
-set(BENCHMARK_TARGETS
-    regexp_benchmark
-    )
+# set(BENCHMARK_TARGETS
+#     regexp_benchmark
+#     )
 
-foreach(target ${TEST_TARGETS})
-  add_executable(${target} re2/testing/${target}.cc util/test.cc)
-  target_link_libraries(${target} testing re2 ${EXTRA_TARGET_LINK_LIBRARIES})
-  if(RE2_BUILD_TESTING)
-    add_test(NAME ${target} COMMAND ${target})
-  endif()
-endforeach(target)
+# foreach(target ${TEST_TARGETS})
+#   add_executable(${target} re2/testing/${target}.cc util/test.cc)
+#   target_link_libraries(${target} testing re2 ${EXTRA_TARGET_LINK_LIBRARIES})
+#   if(RE2_BUILD_TESTING)
+#     add_test(NAME ${target} COMMAND ${target})
+#   endif()
+# endforeach(target)
 
-foreach(target ${BENCHMARK_TARGETS})
-  add_executable(${target} re2/testing/${target}.cc util/benchmark.cc)
-  target_link_libraries(${target} testing re2 ${EXTRA_TARGET_LINK_LIBRARIES})
-endforeach(target)
+# foreach(target ${BENCHMARK_TARGETS})
+#   add_executable(${target} re2/testing/${target}.cc util/benchmark.cc)
+#   target_link_libraries(${target} testing re2 ${EXTRA_TARGET_LINK_LIBRARIES})
+# endforeach(target)
 
 set(RE2_HEADERS
     re2/filtered_re2.h
@@ -133,5 +133,5 @@ set(RE2_HEADERS
     re2/stringpiece.h
     )
 
-install(FILES ${RE2_HEADERS} DESTINATION include/re2)
+# install(FILES ${RE2_HEADERS} DESTINATION include/re2)
 install(TARGETS re2 ARCHIVE DESTINATION lib LIBRARY DESTINATION lib RUNTIME DESTINATION bin)
